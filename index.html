@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UASA Bahasa Cina Tahun 5 - Interactive Study & Revision 2026</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans SC', sans-serif;
+            background-color: #f0f7ff;
+            color: #1e293b;
+            user-select: none;
+        }
+        .font-fun {
+            font-family: 'Fredoka', cursive, sans-serif;
+        }
+        .font-chinese {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        .pinyin-text {
+            font-size: 0.85em;
+            color: #2563eb;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .pulse-slow {
+            animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .bounce-light {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+
+    <!-- TOP NAVIGATION HEADER -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-11 h-11 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="font-fun font-bold text-lg md:text-xl text-slate-800 leading-tight">UASA Year 5 Chinese Master</h1>
+                    <p class="text-xs text-blue-600 font-semibold tracking-wide">Standard 5 Revision 2026 • 华文五年来复习</p>
+                </div>
+            </div>
+
+            <!-- Global Controls & Score Tracker -->
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <!-- Mode Switcher -->
+                <div class="bg-slate-100 p-1 rounded-xl flex text-xs font-semibold">
+                    <button id="btnModeStudy" onclick="switchMode('study')" class="px-3 py-1.5 rounded-lg transition-all bg-white shadow-sm text-blue-600">
+                        <i class="fa-solid fa-book-open mr-1"></i> Study Mode
+                    </button>
+                    <button id="btnModePractice" onclick="switchMode('practice')" class="px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-pen-ruler mr-1"></i> Practice Mode
+                    </button>
+                </div>
+
+                <!-- Score Counter -->
+                <div class="bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl flex items-center space-x-1.5 text-amber-700 font-fun font-bold text-sm">
+                    <i class="fa-solid fa-star text-amber-500 animate-spin-slow"></i>
+                    <span id="scoreCounter">0</span>
+                    <span class="text-xs text-amber-600/70 font-sans">pts</span>
+                </div>
+
+                <!-- Audio Toggle Controls -->
+                <button id="bgmToggleBtn" onclick="toggleBGM()" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center justify-center text-slate-600 transition" title="Toggle Background Music">
+                    <i id="bgmIcon" class="fa-solid fa-music text-slate-400"></i>
+                </button>
+                <button id="sfxToggleBtn" onclick="toggleSFX()" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center justify-center text-slate-600 transition" title="Toggle Sound Effects">
+                    <i id="sfxIcon" class="fa-solid fa-volume-high text-slate-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER WITH SIDEBAR & CONTENT -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- QUESTION NAVIGATION SIDEBAR -->
+        <aside class="lg:col-span-3 bg-white rounded-2xl p-4 border border-slate-200 shadow-sm h-fit">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <span class="font-fun text-sm font-bold text-slate-500 tracking-wider uppercase">Syllabus Index</span>
+                <span id="progressBadge" class="text-xs bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">0/9 Done</span>
+            </div>
+
+            <!-- Question Tabs List -->
+            <div class="grid grid-cols-3 sm:grid-cols-9 lg:grid-cols-1 gap-2" id="questionTabsContainer">
+                <!-- Dynamically populated question tabs -->
+            </div>
+
+            <!-- Quick Tip Card -->
+            <div class="mt-5 p-3.5 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 leading-relaxed">
+                <div class="flex items-center space-x-1.5 font-bold mb-1 text-indigo-700">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                    <span>Teacher's Note</span>
+                </div>
+                <p id="teacherTipText">Toggle between <b>Study Mode</b> to learn pinyin & vocabulary, and <b>Practice Mode</b> to test your standard 5 UASA exam skills!</p>
+            </div>
+        </aside>
+
+        <!-- MAIN QUESTION WORKSPACE -->
+        <main class="lg:col-span-9 flex flex-col space-y-4">
+
+            <!-- Question Header Banner -->
+            <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-2xl p-5 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center space-x-2 text-blue-100 text-xs font-semibold uppercase tracking-wider mb-1">
+                        <span id="currentSoalanTag" class="bg-white/20 px-2 py-0.5 rounded-md">Soalan 1</span>
+                        <span>• UASA Revision Topic</span>
+                    </div>
+                    <h2 id="currentSoalanTitle" class="text-xl md:text-2xl font-bold font-fun">Tulis jawapan yang betul berdasarkan gambar</h2>
+                    <p id="currentSoalanInstruction" class="text-sm text-blue-100 mt-1">Arahan: Hafal perkataan ini dan fahami maksudnya.</p>
+                </div>
+
+                <div class="flex items-center space-x-2 shrink-0">
+                    <button onclick="navigateSoalan(-1)" class="px-3.5 py-2 bg-white/10 hover:bg-white/20 active:bg-white/30 rounded-xl text-white font-medium text-sm transition flex items-center space-x-1">
+                        <i class="fa-solid fa-chevron-left text-xs"></i>
+                        <span>Prev</span>
+                    </button>
+                    <button onclick="navigateSoalan(1)" class="px-3.5 py-2 bg-white rounded-xl text-blue-700 font-semibold text-sm hover:bg-blue-50 transition flex items-center space-x-1 shadow-sm">
+                        <span>Next</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONTENT BODY CONTAINER -->
+            <div id="soalanContentArea" class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm flex-1 min-h-[450px]">
+                <!-- Dynamic Content Rendered Here via JS -->
+            </div>
+
+            <!-- FOOTER REWRITING HELPER KEYBOARD CONTAINER (Hidden by default, used in Soalan 6 & 9) -->
+            <div id="virtualChineseKeyboard" class="hidden bg-slate-100 border border-slate-200 rounded-xl p-3 shadow-inner">
+                <div class="flex items-center justify-between mb-2 px-1 text-xs text-slate-500 font-medium">
+                    <span><i class="fa-solid fa-keyboard mr-1"></i> Quick Chinese Character Helper (Tap to insert):</span>
+                    <span class="text-blue-600 font-semibold">Touch / Click Supported</span>
+                </div>
+                <div id="keyboardKeysList" class="flex flex-wrap gap-2">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- COMPLETION CELEBRATION MODAL -->
+    <div id="completionModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl transform transition-all border border-slate-100">
+            <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 to-orange-400 rounded-full flex items-center justify-center text-white text-3xl mx-auto shadow-lg shadow-orange-200 mb-4 animate-bounce">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h3 class="text-2xl font-bold font-fun text-slate-800">Tahniah! Excellent Job!</h3>
+            <p class="text-sm text-slate-600 mt-2">You have completed all 9 revision sections for UASA Bahasa Cina Tahun 5!</p>
+            
+            <div class="my-5 p-4 bg-amber-50 border border-amber-200 rounded-2xl flex justify-around">
+                <div>
+                    <p class="text-xs text-amber-600 font-semibold">Total Stars Earned</p>
+                    <p id="modalStarsCount" class="text-2xl font-bold text-amber-700 font-fun">0</p>
+                </div>
+                <div class="border-r border-amber-200"></div>
+                <div>
+                    <p class="text-xs text-amber-600 font-semibold">Syllabus Mastery</p>
+                    <p class="text-2xl font-bold text-emerald-600 font-fun">100%</p>
+                </div>
+            </div>
+
+            <button onclick="closeModal()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md shadow-blue-200 transition">
+                Continue Practicing <i class="fa-solid fa-rotate-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // SYLLABUS DATA MODEL (Soalan 1 to Soalan 9)
+        const syllabusData = [
+            {
+                id: 1,
+                title: "Soalan 1 : Tulis jawapan yang betul berdasarkan gambar",
+                titleMalay: "Write the correct answer based on the picture.",
+                instruction: "Hafal perkataan ini (Memorize these traditional delicacies)",
+                type: "food",
+                items: [
+                    {
+                        char: "咖喱角",
+                        pinyin: "kā lǐ jiǎo",
+                        english: "Curry Puff",
+                        malay: "Karipap",
+                        svg: `<svg class="w-full h-full" viewBox="0 0 100 100"><path d="M 15 65 Q 50 15 85 65 C 70 80 30 80 15 65 Z" fill="#f59e0b" stroke="#d97706" stroke-width="3"/><path d="M 15 65 Q 20 60 25 65 Q 30 60 35 65 Q 40 60 45 65 Q 50 60 55 65 Q 60 60 65 65 Q 70 60 75 65 Q 80 60 85 65" fill="none" stroke="#b45309" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="45" r="2" fill="#b45309"/><circle cx="60" cy="50" r="2" fill="#b45309"/></svg>`
+                    },
+                    {
+                        char: "红龟糕",
+                        pinyin: "hóng guī gāo",
+                        english: "Ang Ku Kueh (Red Tortoise Cake)",
+                        malay: "Kuih Kutu / Kuih Penyu Red",
+                        svg: `<svg class="w-full h-full" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="35" ry="28" fill="#ef4444" stroke="#dc2626" stroke-width="3"/><ellipse cx="50" cy="50" rx="25" ry="18" fill="none" stroke="#b91c1c" stroke-width="2.5" stroke-dasharray="4,2"/><path d="M 50 32 L 50 68 M 30 50 L 70 50" stroke="#b91c1c" stroke-width="2"/></svg>`
+                    },
+                    {
+                        char: "曼煎糕",
+                        pinyin: "màn jiān gāo",
+                        english: "Apam Balik (Crispy Pancake)",
+                        malay: "Apam Balik",
+                        svg: `<svg class="w-full h-full" viewBox="0 0 100 100"><path d="M 20 65 Q 50 20 80 65 Z" fill="#fbbf24" stroke="#d97706" stroke-width="3"/><path d="M 25 62 L 75 62" stroke="#78350f" stroke-width="4" stroke-linecap="round"/><circle cx="45" cy="48" r="2" fill="#78350f"/><circle cx="55" cy="52" r="2.5" fill="#78350f"/><circle cx="38" cy="55" r="2" fill="#78350f"/></svg>`
+                    },
+                    {
+                        char: "包子",
+                        pinyin: "bāo zi",
+                        english: "Steamed Bun",
+                        malay: "Kuih Pau",
+                        svg: `<svg class="w-full h-full" viewBox="0 0 100 100"><path d="M 20 65 Q 20 25 50 25 Q 80 25 80 65 C 65 72 35 72 20 65 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="3"/><path d="M 50 25 C 45 35 48 40 50 42 C 52 40 55 35 50 25 Z" fill="#e2e8f0"/><ellipse cx="50" cy="68" rx="35" ry="6" fill="#e2e8f0" opacity="0.6"/></svg>`
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Soalan 2 : Bulatkan jawapan yang betul berdasarkan gambar",
+                titleMalay: "Circle the correct answer based on the picture.",
+                instruction: "Hafal perkataan ini (Places & Traditional Games)",
+                type: "places_games",
+                items: [
+                    { char: "红屋", pinyin: "hóng wū", english: "The Red House (Stadthuys Melaka)", malay: "Bangunan Merah Melaka", icon: "fa-building-columns", color: "text-red-600" },
+                    { char: "热浪岛", pinyin: "rè làng dǎo", english: "Redang Island", malay: "Pulau Redang", icon: "fa-island-tropical", color: "text-emerald-600" },
+                    { char: "金马伦高原", pinyin: "jīn mǎ lún gāo yuán", english: "Cameron Highlands", malay: "Tanah Tinggi Cameron", icon: "fa-mountain-sun", color: "text-teal-600" },
+                    { char: "神山", pinyin: "shén shān", english: "Mount Kinabalu", malay: "Gunung Kinabalu", icon: "fa-mountain", color: "text-slate-700" },
+                    { char: "跳房子", pinyin: "tiào fáng zi", english: "Hopscotch", malay: "Ting-ting / Teng-teng", icon: "fa-border-all", color: "text-amber-600" },
+                    { char: "踢毽子", pinyin: "tī jiàn zi", english: "Shuttlecock Kicking", malay: "Sepak Raga Capteh", icon: "fa-feather", color: "text-indigo-600" },
+                    { char: "五粒子", pinyin: "wǔ lì zi", english: "Five Stones", malay: "Batu Seremban", icon: "fa-cubes", color: "text-purple-600" },
+                    { char: "弹珠", pinyin: "tán zhū", english: "Marbles", malay: "Main Guli", icon: "fa-circle-dot", color: "text-blue-600" }
+                ]
+            },
+            {
+                id: 3,
+                title: "Soalan 3 : Padankan pinyin dengan karakter yang betul",
+                titleMalay: "Match the Pinyin with the correct Chinese character.",
+                instruction: "Hafal perkataan ini (Actions & Activities)",
+                type: "matching",
+                pairs: [
+                    { char: "写作业", pinyin: "xiě zuò yè", english: "Do homework", malay: "Membuat kerja sekolah" },
+                    { char: "回乡", pinyin: "huí xiāng", english: "Return to hometown", malay: "Pulang ke kampung" },
+                    { char: "写生", pinyin: "xiě shēng", english: "Sketch / Paint outdoors", malay: "Melukis pemandangan" },
+                    { char: "放风筝", pinyin: "fàng fēng zhēng", english: "Fly a kite", malay: "Bermain layang-layang" },
+                    { char: "露营", pinyin: "lù yíng", english: "Camping", malay: "Berkhemah" }
+                ]
+            },
+            {
+                id: 4,
+                title: "Soalan 4 : Baca ayat dan pastikan sama ada susunan ayat itu betul atau salah",
+                titleMalay: "Read sentence and verify if the sentence structure is Correct (✅) or Wrong (❌).",
+                instruction: "Hafal ayat ini (Sentence Grammar Rules)",
+                type: "true_false",
+                sentences: [
+                    {
+                        text: "我要买炸香蕉",
+                        pinyin: "wǒ yào mǎi zhà xiāng jiāo",
+                        english: "I want to buy fried bananas.",
+                        correct: true,
+                        explanation: "Correct word order: Subject (我) + Verb (要买) + Object (炸香蕉)."
+                    },
+                    {
+                        text: "我爱好的是下棋",
+                        pinyin: "wǒ ài hào de shì xià qí",
+                        english: "Incorrect sentence structure.",
+                        correct: false,
+                        explanation: "Wrong word order! Correct way: 我的爱好是下棋 (My hobby is playing chess)."
+                    },
+                    {
+                        text: "我想去红屋",
+                        pinyin: "wǒ xiǎng qù hóng wū",
+                        english: "I want to go to the Red House.",
+                        correct: true,
+                        explanation: "Correct structure: Subject (我) + Wish (想去) + Destination (红屋)."
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: "Soalan 5 : Lengkapkan karakter dibawah",
+                titleMalay: "Complete the character stroke/components below.",
+                instruction: "Hafal karakter ini (Memorize these key Chinese characters)",
+                type: "fill_character",
+                characters: [
+                    { char: "写", pinyin: "xiě", meaning: "Write (Menulis)", radical: "冖 (Cover)", options: ["写", "军", "农", "冠"], hint: "Top part is 冖 cover, bottom is 与." },
+                    { char: "跳", pinyin: "tiào", meaning: "Jump (Melompat)", radical: "🈀 / 足 (Foot)", options: ["跳", "桃", "逃", "挑"], hint: "Left radical is 足 (foot) representing jumping." },
+                    { char: "花", pinyin: "huā", meaning: "Flower (Bunga)", radical: "艹 (Grass)", options: ["花", "化", "华", "货"], hint: "Top radical is 艹 (grass/flower)." },
+                    { char: "粒", pinyin: "lì", meaning: "Grain / Counter for small round things (Biji)", radical: "米 (Rice)", options: ["粒", "立", "位", "拉"], hint: "Left side is 米 (rice grain)." }
+                ]
+            },
+            {
+                id: 6,
+                title: "Soalan 6 : Tulis semula ayat",
+                titleMalay: "Rewrite the sentences accurately.",
+                instruction: "Pastikan tulis semula dengan betul. Jangan tinggal soalan ini.",
+                type: "rewrite",
+                sentences: [
+                    { id: 1, text: "我要买红龟糕。", pinyin: "wǒ yào mǎi hóng guī gāo.", english: "I want to buy Ang Ku Kueh." },
+                    { id: 2, text: "我想去金马伦高原。", pinyin: "wǒ xiǎng qù jīn mǎ lún gāo yuán.", english: "I want to go to Cameron Highlands." },
+                    { id: 3, text: "我会写作业。", pinyin: "wǒ huì xiě zuò yè.", english: "I know how to do homework." },
+                    { id: 4, text: "我玩过弹珠。", pinyin: "wǒ wán guò tán zhū.", english: "I have played marbles before." },
+                    { id: 5, text: "我的爱好是露营。", pinyin: "wǒ de ài hào shì lù yíng.", english: "My hobby is camping." }
+                ]
+            },
+            {
+                id: 7,
+                title: "Soalan 7 : Tuliskan jawapan yang betul berdasarkan kegunaan 提 dan 拿",
+                titleMalay: "Usage rules for verbs 提 (tí) vs 拿 (ná).",
+                instruction: "Fahami dan ingat perbezaan kegunaan 提 dan 拿",
+                type: "ti_vs_na",
+                rules: [
+                    {
+                        word: "提",
+                        pinyin: "tí",
+                        definitionMalay: "Digunakan untuk memegang benda yang mempunyai pemegang (handle).",
+                        definitionEng: "Used for carrying items that have handles or straps.",
+                        examples: [
+                            { char: "提灯笼", pinyin: "tí dēng lóng", english: "Carry a lantern" },
+                            { char: "提篮子", pinyin: "tí lán zi", english: "Carry a basket" }
+                        ]
+                    },
+                    {
+                        word: "拿",
+                        pinyin: "ná",
+                        definitionMalay: "Digunakan untuk memegang benda menggunakan tapak tangan.",
+                        definitionEng: "Used for holding or picking up items using palms/hands.",
+                        examples: [
+                            { char: "拿杯子", pinyin: "ná bēi zi", english: "Hold a cup" },
+                            { char: "拿书", pinyin: "ná shū", english: "Hold / take a book" }
+                        ]
+                    }
+                ],
+                quizItems: [
+                    { object: "灯笼", full: "提灯笼", correct: "提", pinyin: "dēng lóng", label: "Lantern (Has handle)" },
+                    { object: "篮子", full: "提篮子", correct: "提", pinyin: "lán zi", label: "Basket (Has handle)" },
+                    { object: "杯子", full: "拿杯子", correct: "拿", pinyin: "bēi zi", label: "Cup (Hold with hand)" },
+                    { object: "书", full: "拿书", correct: "拿", pinyin: "shū", label: "Book (Hold with hand)" }
+                ]
+            },
+            {
+                id: 8,
+                title: "Soalan 8 : Masukkan tanda baca yang betul",
+                titleMalay: "Insert the correct punctuation marks.",
+                instruction: "Hafal tanda baca yang betul (Master standard Chinese punctuation)",
+                type: "punctuation",
+                rulesInfo: [
+                    "顿号 ( 、 ) : Enumeration comma used to list items/places.",
+                    "问号 ( ？ ) : Question mark used at the end of a question.",
+                    "感叹号 ( ！ ) : Exclamation mark for strong emotion.",
+                    "冒号与双引号 ( ：“ ” ) : Colon and quotes for direct speech."
+                ],
+                items: [
+                    { id: 1, fullText: "我想去神山 、尼亚洞和红屋。", pinyin: "wǒ xiǎng qù shén shān, ní yà dòng hé hóng wū.", english: "I want to go to Mount Kinabalu, Niah Cave and Red House.", punctuation: "顿号 、", keyChar: "、" },
+                    { id: 2, fullText: "你的爱好是什么？", pinyin: "nǐ de ài hào shì shén me?", english: "What is your hobby?", punctuation: "问号 ？", keyChar: "？" },
+                    { id: 3, fullText: "我很开心！", pinyin: "wǒ hěn kāi xīn!", english: "I am very happy!", punctuation: "感叹号 ！", keyChar: "！" },
+                    { id: 4, fullText: "我对爸爸说 ：“我爱你。”", pinyin: "wǒ duì bà ba shuō: \"wǒ ài nǐ.\"", english: "I said to Dad: \"I love you.\"", punctuation: "冒号与引号 ：“ ”", keyChar: "：“ ”" }
+                ]
+            },
+            {
+                id: 9,
+                title: "Soalan 9 : Susun ayat dengan betul. Tulis semula selepas susun.",
+                titleMalay: "Rearrange words into correct order and rewrite sentence.",
+                instruction: "Susun mengikut nombor, kemudian tulis semula dengan susunan yang betul.",
+                type: "unscramble",
+                items: [
+                    {
+                        id: 1,
+                        words: ["爸爸", "想去", "热浪岛。"],
+                        correctOrder: ["爸爸", "想去", "热浪岛。"],
+                        fullSentence: "爸爸想去热浪岛。",
+                        pinyin: "bà ba xiǎng qù rè làng dǎo.",
+                        english: "Dad wants to go to Redang Island."
+                    },
+                    {
+                        id: 2,
+                        words: ["我们", "晚上", "在学校", "玩跳房子。"],
+                        correctOrder: ["我们", "晚上", "在学校", "玩跳房子。"],
+                        fullSentence: "我们晚上在学校玩跳房子。",
+                        pinyin: "wǒ men wǎn shang zài xué xiào wán tiào fáng zi.",
+                        english: "We play hopscotch at school at night."
+                    },
+                    {
+                        id: 3,
+                        words: ["我", "玩过", "踢毽子。"],
+                        correctOrder: ["我", "玩过", "踢毽子。"],
+                        fullSentence: "我玩过踢毽子。",
+                        pinyin: "wǒ wán guò tī jiàn zi.",
+                        english: "I have played shuttlecock kicking before."
+                    }
+                ]
+            }
+        ];
+
+        // GLOBAL STATE
+        let currentSoalanIndex = 0; // 0 to 8
+        let currentMode = 'study'; // 'study' or 'practice'
+        let userScore = 0;
+        let completedQuestions = new Set();
+        let isBGMPlaying = false;
+        let isSFXOn = true;
+
+        // Audio Context & Synthesizers
+        let audioCtx = null;
+        let bgmTimer = null;
+
+        function initAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Web Audio Sound FX generator
+        function playSFX(type) {
+            if (!isSFXOn) return;
+            initAudioContext();
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+                osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now); // A3
+                osc.frequency.setValueAtTime(180, now + 0.15);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            } else if (type === 'click') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                osc.start(now);
+                osc.stop(now + 0.08);
+            } else if (type === 'fanfare') {
+                const freqs = [523.25, 659.25, 783.99, 1046.50];
+                freqs.forEach((f, idx) => {
+                    const subOsc = audioCtx.createOscillator();
+                    const subGain = audioCtx.createGain();
+                    subOsc.connect(subGain);
+                    subGain.connect(audioCtx.destination);
+                    subOsc.type = 'triangle';
+                    subOsc.frequency.setValueAtTime(f, now + idx * 0.12);
+                    subGain.gain.setValueAtTime(0.2, now + idx * 0.12);
+                    subGain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.3);
+                    subOsc.start(now + idx * 0.12);
+                    subOsc.stop(now + idx * 0.12 + 0.3);
+                });
+            }
+        }
+
+        // Web Audio Synthesized BGM Loop
+        function toggleBGM() {
+            initAudioContext();
+            isBGMPlaying = !isBGMPlaying;
+            const bgmIcon = document.getElementById('bgmIcon');
+            const bgmBtn = document.getElementById('bgmToggleBtn');
+
+            if (isBGMPlaying) {
+                bgmIcon.className = "fa-solid fa-music text-amber-500 animate-bounce";
+                bgmBtn.classList.add("bg-amber-100", "border-amber-300");
+                startBGMLoop();
+            } else {
+                bgmIcon.className = "fa-solid fa-music text-slate-400";
+                bgmBtn.classList.remove("bg-amber-100", "border-amber-300");
+                stopBGMLoop();
+            }
+        }
+
+        function startBGMLoop() {
+            if (bgmTimer) clearInterval(bgmTimer);
+            const scale = [261.63, 293.66, 329.63, 392.00, 440.00]; // Pentatonic scale (C, D, E, G, A)
+            let noteIdx = 0;
+
+            bgmTimer = setInterval(() => {
+                if (!isBGMPlaying || !audioCtx) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.type = 'sine';
+                const freq = scale[noteIdx % scale.length];
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+                osc.start(now);
+                osc.stop(now + 0.6);
+                noteIdx = (noteIdx + Math.floor(Math.random() * 3) + 1) % scale.length;
+            }, 600);
+        }
+
+        function stopBGMLoop() {
+            if (bgmTimer) {
+                clearInterval(bgmTimer);
+                bgmTimer = null;
+            }
+        }
+
+        function toggleSFX() {
+            isSFXOn = !isSFXOn;
+            const sfxIcon = document.getElementById('sfxIcon');
+            if (isSFXOn) {
+                sfxIcon.className = "fa-solid fa-volume-high text-slate-600";
+                playSFX('click');
+            } else {
+                sfxIcon.className = "fa-solid fa-volume-xmark text-slate-400";
+            }
+        }
+
+        // Mandarin Text-to-Speech audio reader
+        function speakChinese(text) {
+            playSFX('click');
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop current speech
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.85; // Slightly slower for clarity
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function renderSidebarTabs() {
+            const container = document.getElementById('questionTabsContainer');
+            container.innerHTML = '';
+
+            syllabusData.forEach((soalan, index) => {
+                const isActive = index === currentSoalanIndex;
+                const isDone = completedQuestions.has(soalan.id);
+
+                const btn = document.createElement('button');
+                btn.onclick = () => {
+                    playSFX('click');
+                    currentSoalanIndex = index;
+                    renderCurrentSoalan();
+                };
+
+                btn.className = `w-full text-left p-2.5 rounded-xl transition-all font-medium flex items-center justify-between text-xs sm:text-sm border ${
+                    isActive
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-100 font-bold'
+                        : isDone
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                }`;
+
+                btn.innerHTML = `
+                    <div class="flex items-center space-x-2 truncate">
+                        <span class="w-6 h-6 rounded-lg ${
+                            isActive ? 'bg-white/20 text-white' : isDone ? 'bg-emerald-200 text-emerald-800' : 'bg-slate-200 text-slate-600'
+                        } flex items-center justify-center font-bold text-xs shrink-0">${soalan.id}</span>
+                        <span class="truncate">Soalan ${soalan.id}</span>
+                    </div>
+                    ${isDone ? '<i class="fa-solid fa-circle-check text-emerald-500 text-sm ml-1 shrink-0"></i>' : ''}
+                `;
+
+                container.appendChild(btn);
+            });
+
+            document.getElementById('progressBadge').innerText = `${completedQuestions.size}/9 Done`;
+        }
+
+        function switchMode(mode) {
+            playSFX('click');
+            currentMode = mode;
+
+            const btnStudy = document.getElementById('btnModeStudy');
+            const btnPractice = document.getElementById('btnModePractice');
+
+            if (mode === 'study') {
+                btnStudy.className = "px-3 py-1.5 rounded-lg transition-all bg-white shadow-sm text-blue-600 font-bold";
+                btnPractice.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900";
+            } else {
+                btnPractice.className = "px-3 py-1.5 rounded-lg transition-all bg-white shadow-sm text-blue-600 font-bold";
+                btnStudy.className = "px-3 py-1.5 rounded-lg transition-all text-slate-600 hover:text-slate-900";
+            }
+
+            renderCurrentSoalan();
+        }
+
+        function navigateSoalan(dir) {
+            playSFX('click');
+            currentSoalanIndex = (currentSoalanIndex + dir + syllabusData.length) % syllabusData.length;
+            renderCurrentSoalan();
+        }
+
+        function renderCurrentSoalan() {
+            renderSidebarTabs();
+
+            const data = syllabusData[currentSoalanIndex];
+            document.getElementById('currentSoalanTag').innerText = `Soalan ${data.id} of 9`;
+            document.getElementById('currentSoalanTitle').innerText = data.title;
+            document.getElementById('currentSoalanInstruction').innerText = `Arahan: ${data.instruction} (${data.titleMalay})`;
+
+            const contentArea = document.getElementById('soalanContentArea');
+            contentArea.innerHTML = '';
+
+            // Hide virtual keyboard by default
+            document.getElementById('virtualChineseKeyboard').classList.add('hidden');
+
+            // Render according to question index & mode
+            switch(data.id) {
+                case 1: renderSoalan1(data, contentArea); break;
+                case 2: renderSoalan2(data, contentArea); break;
+                case 3: renderSoalan3(data, contentArea); break;
+                case 4: renderSoalan4(data, contentArea); break;
+                case 5: renderSoalan5(data, contentArea); break;
+                case 6: renderSoalan6(data, contentArea); break;
+                case 7: renderSoalan7(data, contentArea); break;
+                case 8: renderSoalan8(data, contentArea); break;
+                case 9: renderSoalan9(data, contentArea); break;
+            }
+        }
+
+        function renderSoalan1(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">`;
+                data.items.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition border border-amber-100 bg-amber-50/30">
+                            <div class="w-28 h-28 mb-3 bg-white rounded-2xl p-2 border border-slate-100 shadow-inner flex items-center justify-center">
+                                ${item.svg}
+                            </div>
+                            <div class="pinyin-text mb-1">${item.pinyin}</div>
+                            <div class="text-2xl font-bold font-chinese text-slate-800 mb-1">${item.char}</div>
+                            <div class="text-xs font-medium text-slate-600 mb-0.5">${item.english}</div>
+                            <div class="text-xs text-amber-700 bg-amber-100/60 px-2.5 py-0.5 rounded-full font-semibold">${item.malay}</div>
+                            
+                            <button onclick="speakChinese('${item.char}')" class="mt-3 text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold px-3 py-1.5 rounded-xl flex items-center space-x-1.5 transition">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Listen</span>
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Match images with correct food names
+                let html = `
+                    <div class="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-xl text-xs text-blue-800 flex items-center justify-between">
+                        <span><i class="fa-solid fa-pen-clip mr-1.5"></i> Select the correct Chinese word for each traditional snack:</span>
+                        <span id="s1ScoreBadge" class="font-bold text-blue-600">0/${data.items.length} Correct</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                `;
+
+                data.items.forEach((item, idx) => {
+                    // Generate options including correct one
+                    const options = [...data.items].map(i => i.char).sort(() => Math.random() - 0.5);
+
+                    html += `
+                        <div id="s1Card_${idx}" class="border border-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 bg-slate-50/50">
+                            <div class="w-24 h-24 bg-white rounded-xl p-2 border border-slate-200 shadow-sm shrink-0 flex items-center justify-center">
+                                ${item.svg}
+                            </div>
+                            <div class="flex-1 w-full">
+                                <p class="text-xs text-slate-500 mb-1">What snack is this? (${item.english})</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    ${options.map(opt => `
+                                        <button onclick="checkSoalan1Choice(${idx}, '${opt}', '${item.char}')" 
+                                                class="s1OptBtn_${idx} py-2 px-3 bg-white hover:bg-blue-50 border border-slate-200 rounded-xl text-slate-800 font-chinese font-bold text-sm transition">
+                                            ${opt}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s1CorrectCount = 0;
+        function checkSoalan1Choice(cardIdx, selectedChar, correctChar) {
+            const card = document.getElementById(`s1Card_${cardIdx}`);
+            const buttons = card.querySelectorAll(`.s1OptBtn_${cardIdx}`);
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.innerText.trim() === correctChar) {
+                    btn.className = "py-2 px-3 bg-emerald-500 text-white font-chinese font-bold text-sm rounded-xl shadow-sm";
+                } else if (btn.innerText.trim() === selectedChar && selectedChar !== correctChar) {
+                    btn.className = "py-2 px-3 bg-rose-500 text-white font-chinese font-bold text-sm rounded-xl opacity-75";
+                } else {
+                    btn.className = "py-2 px-3 bg-slate-100 text-slate-400 font-chinese font-bold text-sm rounded-xl";
+                }
+            });
+
+            if (selectedChar === correctChar) {
+                playSFX('correct');
+                s1CorrectCount++;
+                addPoints(10);
+                speakChinese(correctChar);
+            } else {
+                playSFX('wrong');
+            }
+
+            document.getElementById('s1ScoreBadge').innerText = `${s1CorrectCount}/4 Correct`;
+            if (s1CorrectCount === 4) {
+                markQuestionCompleted(1);
+            }
+        }
+
+        function renderSoalan2(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">`;
+                data.items.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition border border-slate-200">
+                            <div class="w-14 h-14 mb-2 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl ${item.color}">
+                                <i class="fa-solid ${item.icon}"></i>
+                            </div>
+                            <div class="pinyin-text mb-0.5">${item.pinyin}</div>
+                            <div class="text-xl font-bold font-chinese text-slate-800 mb-1">${item.char}</div>
+                            <div class="text-xs font-medium text-slate-600 mb-1">${item.english}</div>
+                            <div class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">${item.malay}</div>
+                            
+                            <button onclick="speakChinese('${item.char}')" class="mt-3 text-xs bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 font-medium px-2.5 py-1 rounded-lg flex items-center space-x-1 transition">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                                <span>Speak</span>
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Multiple Choice Selection based on Picture/Icon
+                let html = `
+                    <div class="mb-4 p-3 bg-indigo-50 border border-indigo-100 rounded-xl text-xs text-indigo-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-circle-check mr-1.5"></i> Select/Circle the correct term corresponding to each place or game:</span>
+                        <span id="s2ScoreBadge" class="font-bold text-indigo-700">0/${data.items.length} Circle Correct</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                `;
+
+                data.items.forEach((item, idx) => {
+                    const options = [item.char];
+                    while (options.length < 3) {
+                        const randomItem = data.items[Math.floor(Math.random() * data.items.length)].char;
+                        if (!options.includes(randomItem)) options.push(randomItem);
+                    }
+                    options.sort(() => Math.random() - 0.5);
+
+                    html += `
+                        <div id="s2Card_${idx}" class="border border-slate-200 rounded-2xl p-3.5 bg-white shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-xl ${item.color} shrink-0">
+                                    <i class="fa-solid ${item.icon}"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-400 font-medium">${item.english}</p>
+                                    <p class="pinyin-text text-xs">${item.pinyin}</p>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                ${options.map(opt => `
+                                    <button onclick="checkSoalan2Choice(${idx}, '${opt}', '${item.char}')" 
+                                            class="s2Opt_${idx} w-full py-1.5 px-3 bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded-xl font-chinese font-bold text-slate-800 text-sm transition text-left flex items-center justify-between">
+                                        <span>${opt}</span>
+                                        <i class="fa-regular fa-circle text-slate-300 text-xs"></i>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s2CorrectCount = 0;
+        function checkSoalan2Choice(cardIdx, selected, correct) {
+            const card = document.getElementById(`s2Card_${cardIdx}`);
+            const buttons = card.querySelectorAll(`.s2Opt_${cardIdx}`);
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                const char = btn.querySelector('span').innerText.trim();
+                const icon = btn.querySelector('i');
+
+                if (char === correct) {
+                    btn.className = "w-full py-1.5 px-3 bg-emerald-500 text-white border border-emerald-600 rounded-xl font-chinese font-bold text-sm transition text-left flex items-center justify-between shadow-sm";
+                    icon.className = "fa-solid fa-circle-check text-white text-xs";
+                } else if (char === selected && selected !== correct) {
+                    btn.className = "w-full py-1.5 px-3 bg-rose-500 text-white border border-rose-600 rounded-xl font-chinese font-bold text-sm transition text-left flex items-center justify-between opacity-80";
+                    icon.className = "fa-solid fa-circle-xmark text-white text-xs";
+                } else {
+                    btn.className = "w-full py-1.5 px-3 bg-slate-100 text-slate-400 border border-slate-100 rounded-xl font-chinese font-bold text-sm transition text-left flex items-center justify-between opacity-50";
+                }
+            });
+
+            if (selected === correct) {
+                playSFX('correct');
+                s2CorrectCount++;
+                addPoints(10);
+                speakChinese(correct);
+            } else {
+                playSFX('wrong');
+            }
+
+            document.getElementById('s2ScoreBadge').innerText = `${s2CorrectCount}/8 Circle Correct`;
+            if (s2CorrectCount === 8) {
+                markQuestionCompleted(2);
+            }
+        }
+
+        function renderSoalan3(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="max-w-3xl mx-auto space-y-3">`;
+                data.pairs.forEach(pair => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between border border-slate-200 hover:border-blue-300 transition gap-3">
+                            <div class="flex items-center space-x-4">
+                                <div class="text-2xl font-bold font-chinese text-slate-800 bg-blue-50 border border-blue-100 px-4 py-2 rounded-xl">
+                                    ${pair.char}
+                                </div>
+                                <div>
+                                    <p class="pinyin-text text-base font-bold">${pair.pinyin}</p>
+                                    <p class="text-xs text-slate-600">${pair.english}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3 justify-between sm:justify-end">
+                                <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium">${pair.malay}</span>
+                                <button onclick="speakChinese('${pair.char}')" class="w-9 h-9 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition">
+                                    <i class="fa-solid fa-volume-high text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Interactive Matcher: Click Pinyin then Click Character
+                let html = `
+                    <div class="mb-4 p-3 bg-purple-50 border border-purple-100 rounded-xl text-xs text-purple-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-link mr-1.5"></i> Tap a <b>Pinyin card</b> on the left, then tap its matching <b>Chinese Character</b> on the right:</span>
+                        <span id="s3ScoreBadge" class="font-bold text-purple-700">0/${data.pairs.length} Matched</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                        <!-- Pinyin Cards -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Step 1: Select Pinyin</h4>
+                            <div id="pinyinCardsList" class="space-y-2.5">
+                                ${data.pairs.map((p, i) => `
+                                    <button id="pinyinBtn_${i}" onclick="selectPinyinCard(${i}, '${p.pinyin}')"
+                                            class="w-full p-3.5 bg-white border-2 border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-between transition text-left shadow-sm">
+                                        <span class="pinyin-text text-base font-bold">${p.pinyin}</span>
+                                        <span class="text-xs text-slate-400 font-sans">${p.english}</span>
+                                    </button>
+                                `).sort(() => Math.random() - 0.5).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Character Cards -->
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Step 2: Select Chinese Character</h4>
+                            <div id="charCardsList" class="space-y-2.5">
+                                ${data.pairs.map((p, i) => `
+                                    <button id="charBtn_${i}" onclick="selectCharCard(${i}, '${p.char}', '${p.pinyin}')"
+                                            class="w-full p-3.5 bg-white border-2 border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-between transition text-left shadow-sm">
+                                        <span class="font-chinese font-bold text-2xl text-slate-800">${p.char}</span>
+                                        <i class="fa-regular fa-circle-dot text-slate-300"></i>
+                                    </button>
+                                `).sort(() => Math.random() - 0.5).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML = html;
+            }
+        }
+
+        let activePinyinSelected = null;
+        let s3MatchedCount = 0;
+
+        function selectPinyinCard(idx, pinyinVal) {
+            playSFX('click');
+            activePinyinSelected = { idx, pinyin: pinyinVal };
+
+            // Highlight selected Pinyin
+            syllabusData[2].pairs.forEach((_, i) => {
+                const btn = document.getElementById(`pinyinBtn_${i}`);
+                if (btn) {
+                    if (i === idx) {
+                        btn.className = "w-full p-3.5 bg-purple-100 border-2 border-purple-500 rounded-2xl flex items-center justify-between transition text-left shadow-md scale-[1.02]";
+                    } else if (!btn.disabled) {
+                        btn.className = "w-full p-3.5 bg-white border-2 border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-between transition text-left shadow-sm";
+                    }
+                }
+            });
+        }
+
+        function selectCharCard(idx, charVal, pinyinVal) {
+            if (!activePinyinSelected) {
+                alert("Please select a Pinyin card on the left first!");
+                return;
+            }
+
+            const pinyinBtn = document.getElementById(`pinyinBtn_${activePinyinSelected.idx}`);
+            const charBtn = document.getElementById(`charBtn_${idx}`);
+
+            if (activePinyinSelected.pinyin === pinyinVal) {
+                // Correct Match
+                playSFX('correct');
+                speakChinese(charVal);
+
+                pinyinBtn.disabled = true;
+                charBtn.disabled = true;
+
+                pinyinBtn.className = "w-full p-3.5 bg-emerald-50 border-2 border-emerald-500 rounded-2xl flex items-center justify-between transition text-left opacity-75";
+                charBtn.className = "w-full p-3.5 bg-emerald-50 border-2 border-emerald-500 rounded-2xl flex items-center justify-between transition text-left opacity-75";
+                
+                charBtn.querySelector('i').className = "fa-solid fa-check text-emerald-600";
+
+                s3MatchedCount++;
+                addPoints(10);
+                document.getElementById('s3ScoreBadge').innerText = `${s3MatchedCount}/5 Matched`;
+
+                if (s3MatchedCount === 5) {
+                    markQuestionCompleted(3);
+                }
+            } else {
+                // Incorrect
+                playSFX('wrong');
+                charBtn.className = "w-full p-3.5 bg-rose-50 border-2 border-rose-400 rounded-2xl flex items-center justify-between transition text-left animate-bounce";
+                setTimeout(() => {
+                    charBtn.className = "w-full p-3.5 bg-white border-2 border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-between transition text-left shadow-sm";
+                }, 800);
+            }
+
+            activePinyinSelected = null;
+        }
+
+        function renderSoalan4(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="max-w-3xl mx-auto space-y-4">`;
+                data.sentences.forEach((item, i) => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-5 border ${item.correct ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30'}">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <div class="pinyin-text text-base mb-1">${item.pinyin}</div>
+                                    <div class="text-2xl font-bold font-chinese text-slate-800 mb-1">${item.text}</div>
+                                    <div class="text-xs text-slate-600 mb-2">${item.english}</div>
+                                </div>
+                                <div class="text-3xl">
+                                    ${item.correct ? '<span class="text-emerald-500">✅</span>' : '<span class="text-rose-500">❌</span>'}
+                                </div>
+                            </div>
+                            <div class="mt-2 pt-2 border-t border-slate-200/60 text-xs text-slate-600 flex items-center justify-between">
+                                <span><i class="fa-solid fa-circle-info mr-1 text-blue-500"></i> ${item.explanation}</span>
+                                <button onclick="speakChinese('${item.text}')" class="text-blue-600 font-semibold hover:underline">
+                                    <i class="fa-solid fa-volume-high mr-1"></i> Speak
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Check ✅ Correct or ❌ Wrong
+                let html = `
+                    <div class="mb-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-list-check mr-1.5"></i> Read each sentence carefully and decide if grammar & word order is <b>Correct ✅</b> or <b>Wrong ❌</b>:</span>
+                        <span id="s4ScoreBadge" class="font-bold text-amber-700">0/${data.sentences.length} Answered</span>
+                    </div>
+                    <div class="max-w-3xl mx-auto space-y-4">
+                `;
+
+                data.sentences.forEach((item, idx) => {
+                    html += `
+                        <div id="s4Card_${idx}" class="p-5 border border-slate-200 rounded-2xl bg-white shadow-sm">
+                            <p class="pinyin-text text-sm mb-1">${item.pinyin}</p>
+                            <h3 class="text-2xl font-chinese font-bold text-slate-800 mb-3">${item.text}</h3>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="checkSoalan4Answer(${idx}, true, ${item.correct})"
+                                        class="s4Btn_${idx} flex-1 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold rounded-xl border border-emerald-200 transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>Betul ✅ (Correct)</span>
+                                </button>
+                                <button onclick="checkSoalan4Answer(${idx}, false, ${item.correct})"
+                                        class="s4Btn_${idx} flex-1 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold rounded-xl border border-rose-200 transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                    <span>Salah ❌ (Wrong)</span>
+                                </button>
+                            </div>
+                            <div id="s4Explain_${idx}" class="hidden mt-3 p-3 rounded-xl text-xs font-medium"></div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s4CorrectCount = 0;
+        function checkSoalan4Answer(idx, userChoice, actualCorrect) {
+            const buttons = document.querySelectorAll(`.s4Btn_${idx}`);
+            buttons.forEach(b => b.disabled = true);
+
+            const explainBox = document.getElementById(`s4Explain_${idx}`);
+            explainBox.classList.remove('hidden');
+
+            const item = syllabusData[3].sentences[idx];
+
+            if (userChoice === actualCorrect) {
+                playSFX('correct');
+                s4CorrectCount++;
+                addPoints(10);
+                speakChinese(item.text);
+
+                explainBox.className = "mt-3 p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs";
+                explainBox.innerHTML = `<b><i class="fa-solid fa-check mr-1"></i> Correct!</b> ${item.explanation}`;
+            } else {
+                playSFX('wrong');
+                explainBox.className = "mt-3 p-3 bg-rose-50 text-rose-800 border border-rose-200 rounded-xl text-xs";
+                explainBox.innerHTML = `<b><i class="fa-solid fa-xmark mr-1"></i> Incorrect!</b> ${item.explanation}`;
+            }
+
+            document.getElementById('s4ScoreBadge').innerText = `${s4CorrectCount}/3 Answered`;
+            if (s4CorrectCount === 3) {
+                markQuestionCompleted(4);
+            }
+        }
+
+        function renderSoalan5(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">`;
+                data.characters.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-5 border border-slate-200 flex flex-col items-center text-center">
+                            <div class="w-20 h-20 bg-blue-50 border-2 border-blue-200 rounded-2xl flex items-center justify-center font-chinese font-bold text-4xl text-blue-700 mb-3 shadow-inner">
+                                ${item.char}
+                            </div>
+                            <div class="pinyin-text text-base mb-1">${item.pinyin}</div>
+                            <div class="text-sm font-bold text-slate-700 mb-1">${item.meaning}</div>
+                            <div class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full mb-3">Radical: ${item.radical}</div>
+                            
+                            <button onclick="speakChinese('${item.char}')" class="text-xs bg-slate-100 hover:bg-blue-100 text-blue-600 font-semibold px-3 py-1.5 rounded-xl transition">
+                                <i class="fa-solid fa-volume-high mr-1"></i> Pronounce
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Complete character selection
+                let html = `
+                    <div class="mb-4 p-3 bg-cyan-50 border border-cyan-100 rounded-xl text-xs text-cyan-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-puzzle-piece mr-1.5"></i> Identify and select the correct Chinese character for each definition:</span>
+                        <span id="s5ScoreBadge" class="font-bold text-cyan-700">0/${data.characters.length} Correct</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                `;
+
+                data.characters.forEach((item, idx) => {
+                    html += `
+                        <div id="s5Card_${idx}" class="p-4 border border-slate-200 rounded-2xl bg-white shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="pinyin-text text-sm">${item.pinyin}</span>
+                                    <span class="text-xs text-slate-400">Radical: ${item.radical}</span>
+                                </div>
+                                <h4 class="text-base font-bold text-slate-800 mb-1">${item.meaning}</h4>
+                                <p class="text-xs text-slate-500 mb-3">${item.hint}</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-4 gap-2">
+                                ${item.options.map(opt => `
+                                    <button onclick="checkSoalan5Choice(${idx}, '${opt}', '${item.char}')"
+                                            class="s5Opt_${idx} py-2 bg-slate-50 hover:bg-cyan-50 border border-slate-200 font-chinese font-bold text-xl text-slate-800 rounded-xl transition">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s5CorrectCount = 0;
+        function checkSoalan5Choice(idx, selected, correct) {
+            const buttons = document.querySelectorAll(`.s5Opt_${idx}`);
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.innerText.trim() === correct) {
+                    b.className = "py-2 bg-emerald-500 text-white font-chinese font-bold text-xl rounded-xl shadow-sm";
+                } else if (b.innerText.trim() === selected && selected !== correct) {
+                    b.className = "py-2 bg-rose-500 text-white font-chinese font-bold text-xl rounded-xl opacity-80";
+                } else {
+                    b.className = "py-2 bg-slate-100 text-slate-300 font-chinese font-bold text-xl rounded-xl";
+                }
+            });
+
+            if (selected === correct) {
+                playSFX('correct');
+                s5CorrectCount++;
+                addPoints(10);
+                speakChinese(correct);
+            } else {
+                playSFX('wrong');
+            }
+
+            document.getElementById('s5ScoreBadge').innerText = `${s5CorrectCount}/4 Correct`;
+            if (s5CorrectCount === 4) {
+                markQuestionCompleted(5);
+            }
+        }
+
+        function renderSoalan6(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="max-w-3xl mx-auto space-y-3">`;
+                data.sentences.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md mb-1 inline-block">Sentence ${item.id}</span>
+                                <div class="pinyin-text text-sm mb-0.5">${item.pinyin}</div>
+                                <div class="text-xl font-bold font-chinese text-slate-800">${item.text}</div>
+                                <div class="text-xs text-slate-500 mt-1">${item.english}</div>
+                            </div>
+                            <button onclick="speakChinese('${item.text}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Listen</span>
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Type/rewrite sentence accurately
+                showVirtualKeyboard(["我要买红龟糕。", "我想去金马伦高原。", "我会写作业。", "我玩过弹珠。", "我的爱好是露营。"]);
+
+                let html = `
+                    <div class="mb-4 p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-xs text-emerald-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-keyboard mr-1.5"></i> Rewrite each Chinese sentence accurately into the input box below:</span>
+                        <span id="s6ScoreBadge" class="font-bold text-emerald-700">0/${data.sentences.length} Rewritten</span>
+                    </div>
+                    <div class="max-w-3xl mx-auto space-y-4">
+                `;
+
+                data.sentences.forEach((item, idx) => {
+                    html += `
+                        <div class="p-4 border border-slate-200 rounded-2xl bg-white shadow-sm space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-400">Sentence ${item.id}</span>
+                                <span class="pinyin-text text-xs">${item.pinyin}</span>
+                            </div>
+                            <p class="text-lg font-chinese font-bold text-slate-800 bg-slate-50 p-2.5 rounded-xl border border-slate-100 select-all">${item.text}</p>
+                            
+                            <div class="flex items-center space-x-2">
+                                <input type="text" id="s6Input_${idx}" placeholder="Tulis semula ayat di sini..." 
+                                       class="flex-1 px-3.5 py-2.5 border border-slate-300 rounded-xl text-slate-800 font-chinese font-bold text-base focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                       onfocus="activeRewriteInputId = 's6Input_${idx}'">
+                                <button onclick="verifyRewriteSentence(${idx}, '${item.text}')" 
+                                        class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs transition">
+                                    Verify
+                                </button>
+                            </div>
+                            <div id="s6Feedback_${idx}" class="hidden text-xs font-bold"></div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let activeRewriteInputId = null;
+        let s6VerifiedCount = 0;
+
+        function showVirtualKeyboard(phrasesList) {
+            const keyboardBox = document.getElementById('virtualChineseKeyboard');
+            const keysList = document.getElementById('keyboardKeysList');
+            keyboardBox.classList.remove('hidden');
+            keysList.innerHTML = '';
+
+            // Extract all distinct Chinese characters + punctuation
+            const allChars = Array.from(new Set(phrasesList.join('').split('')));
+            allChars.forEach(char => {
+                const btn = document.createElement('button');
+                btn.className = "px-3 py-1.5 bg-white hover:bg-blue-50 border border-slate-300 rounded-lg text-slate-800 font-chinese font-bold text-base shadow-sm transition active:scale-95";
+                btn.innerText = char;
+                btn.onclick = () => {
+                    playSFX('click');
+                    if (activeRewriteInputId) {
+                        const input = document.getElementById(activeRewriteInputId);
+                        if (input) {
+                            input.value += char;
+                            input.focus();
+                        }
+                    }
+                };
+                keysList.appendChild(btn);
+            });
+        }
+
+        function verifyRewriteSentence(idx, correctText) {
+            const input = document.getElementById(`s6Input_${idx}`);
+            const feedback = document.getElementById(`s6Feedback_${idx}`);
+            const userText = input.value.trim();
+
+            feedback.classList.remove('hidden');
+
+            if (userText === correctText) {
+                playSFX('correct');
+                input.disabled = true;
+                feedback.className = "text-emerald-600 mt-1 flex items-center space-x-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>Perfect! Sentence matches accurately.</span>`;
+                s6VerifiedCount++;
+                addPoints(10);
+                speakChinese(correctText);
+
+                document.getElementById('s6ScoreBadge').innerText = `${s6VerifiedCount}/5 Rewritten`;
+                if (s6VerifiedCount === 5) {
+                    markQuestionCompleted(6);
+                }
+            } else {
+                playSFX('wrong');
+                feedback.className = "text-rose-500 mt-1 flex items-center space-x-1";
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <span>Mismatch! Make sure all characters and punctuation (。) are exact.</span>`;
+            }
+        }
+
+        function renderSoalan7(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">`;
+                data.rules.forEach(rule => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-5 border border-slate-200 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-chinese font-bold text-3xl shadow-md">
+                                        ${rule.word}
+                                    </div>
+                                    <span class="pinyin-text text-lg font-bold">${rule.pinyin}</span>
+                                </div>
+                                <p class="text-xs text-slate-700 bg-slate-100 p-2.5 rounded-xl font-medium mb-2">${rule.definitionMalay}</p>
+                                <p class="text-xs text-slate-500 mb-4">${rule.definitionEng}</p>
+                            </div>
+                            
+                            <div>
+                                <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Examples (Contoh):</h5>
+                                <div class="space-y-2">
+                                    ${rule.examples.map(ex => `
+                                        <div class="p-2.5 bg-blue-50/50 border border-blue-100 rounded-xl flex items-center justify-between">
+                                            <div>
+                                                <span class="pinyin-text text-xs mr-2">${ex.pinyin}</span>
+                                                <span class="font-chinese font-bold text-lg text-slate-800">${ex.char}</span>
+                                            </div>
+                                            <button onclick="speakChinese('${ex.char}')" class="text-xs text-blue-600 hover:text-blue-800">
+                                                <i class="fa-solid fa-volume-high"></i>
+                                            </button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Select 提 vs 拿
+                let html = `
+                    <div class="mb-4 p-3 bg-amber-50 border border-amber-100 rounded-xl text-xs text-amber-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-hand-holding mr-1.5"></i> Choose whether to use <b>提 (tí)</b> or <b>拿 (ná)</b> for each scenario:</span>
+                        <span id="s7ScoreBadge" class="font-bold text-amber-700">0/${data.quizItems.length} Correct</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                `;
+
+                data.quizItems.forEach((item, idx) => {
+                    html += `
+                        <div id="s7Card_${idx}" class="p-4 border border-slate-200 rounded-2xl bg-white shadow-sm space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="pinyin-text text-sm">${item.pinyin}</span>
+                                <span class="text-xs text-slate-400">${item.label}</span>
+                            </div>
+                            <div class="text-2xl font-chinese font-bold text-slate-800 flex items-center space-x-2">
+                                <span class="text-blue-600 underline decoration-dashed">___</span>
+                                <span>${item.object}</span>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="checkSoalan7Choice(${idx}, '提', '${item.correct}', '${item.full}')"
+                                        class="s7Btn_${idx} py-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 font-chinese font-bold text-lg text-slate-800 rounded-xl transition">
+                                    提 (tí)
+                                </button>
+                                <button onclick="checkSoalan7Choice(${idx}, '拿', '${item.correct}', '${item.full}')"
+                                        class="s7Btn_${idx} py-2.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 font-chinese font-bold text-lg text-slate-800 rounded-xl transition">
+                                    拿 (ná)
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s7CorrectCount = 0;
+        function checkSoalan7Choice(idx, chosen, correct, fullPhrase) {
+            const buttons = document.querySelectorAll(`.s7Btn_${idx}`);
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.innerText.includes(correct)) {
+                    b.className = "py-2.5 bg-emerald-500 text-white font-chinese font-bold text-lg rounded-xl shadow-sm";
+                } else if (b.innerText.includes(chosen) && chosen !== correct) {
+                    b.className = "py-2.5 bg-rose-500 text-white font-chinese font-bold text-lg rounded-xl opacity-80";
+                } else {
+                    b.className = "py-2.5 bg-slate-100 text-slate-300 font-chinese font-bold text-lg rounded-xl";
+                }
+            });
+
+            if (chosen === correct) {
+                playSFX('correct');
+                s7CorrectCount++;
+                addPoints(10);
+                speakChinese(fullPhrase);
+            } else {
+                playSFX('wrong');
+            }
+
+            document.getElementById('s7ScoreBadge').innerText = `${s7CorrectCount}/4 Correct`;
+            if (s7CorrectCount === 4) {
+                markQuestionCompleted(7);
+            }
+        }
+
+        function renderSoalan8(data, container) {
+            if (currentMode === 'study') {
+                let html = `
+                    <div class="max-w-3xl mx-auto space-y-4">
+                        <div class="p-4 bg-indigo-50 border border-indigo-100 rounded-2xl text-xs text-indigo-900 space-y-1">
+                            <h4 class="font-bold text-indigo-700 text-sm mb-1"><i class="fa-solid fa-bookmark mr-1"></i> Punctuation Rules (Tanda Baca Standard):</h4>
+                            ${data.rulesInfo.map(r => `<p>• ${r}</p>`).join('')}
+                        </div>
+
+                        <div class="space-y-3">
+                `;
+
+                data.items.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md mb-1 inline-block">Key Punctuation: ${item.punctuation}</span>
+                                <div class="pinyin-text text-sm mb-0.5">${item.pinyin}</div>
+                                <div class="text-xl font-bold font-chinese text-slate-800">${item.fullText}</div>
+                                <div class="text-xs text-slate-500 mt-1">${item.english}</div>
+                            </div>
+                            <button onclick="speakChinese('${item.fullText}')" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-xl flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Speak</span>
+                            </button>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Pick correct punctuation mark
+                let html = `
+                    <div class="mb-4 p-3 bg-purple-50 border border-purple-100 rounded-xl text-xs text-purple-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-quote-left mr-1.5"></i> Pick the correct punctuation mark for each sentence:</span>
+                        <span id="s8ScoreBadge" class="font-bold text-purple-700">0/${data.items.length} Correct</span>
+                    </div>
+                    <div class="max-w-3xl mx-auto space-y-4">
+                `;
+
+                const puncOptions = ["顿号 、", "问号 ？", "感叹号 ！", "冒号与引号 ：“ ”"];
+
+                data.items.forEach((item, idx) => {
+                    html += `
+                        <div id="s8Card_${idx}" class="p-4 border border-slate-200 rounded-2xl bg-white shadow-sm space-y-3">
+                            <p class="pinyin-text text-xs">${item.pinyin}</p>
+                            <h4 class="text-xl font-chinese font-bold text-slate-800">${item.fullText}</h4>
+                            
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                ${puncOptions.map(opt => `
+                                    <button onclick="checkSoalan8Choice(${idx}, '${opt}', '${item.punctuation}', '${item.fullText}')"
+                                            class="s8Btn_${idx} py-2 bg-slate-50 hover:bg-purple-50 border border-slate-200 font-bold text-xs text-slate-800 rounded-xl transition">
+                                        ${opt}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s8CorrectCount = 0;
+        function checkSoalan8Choice(idx, chosen, correct, text) {
+            const buttons = document.querySelectorAll(`.s8Btn_${idx}`);
+            buttons.forEach(b => {
+                b.disabled = true;
+                if (b.innerText.trim() === correct) {
+                    b.className = "py-2 bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-sm";
+                } else if (b.innerText.trim() === chosen && chosen !== correct) {
+                    b.className = "py-2 bg-rose-500 text-white font-bold text-xs rounded-xl opacity-80";
+                } else {
+                    b.className = "py-2 bg-slate-100 text-slate-300 font-bold text-xs rounded-xl";
+                }
+            });
+
+            if (chosen === correct) {
+                playSFX('correct');
+                s8CorrectCount++;
+                addPoints(10);
+                speakChinese(text);
+            } else {
+                playSFX('wrong');
+            }
+
+            document.getElementById('s8ScoreBadge').innerText = `${s8CorrectCount}/4 Correct`;
+            if (s8CorrectCount === 4) {
+                markQuestionCompleted(8);
+            }
+        }
+
+        function renderSoalan9(data, container) {
+            if (currentMode === 'study') {
+                let html = `<div class="max-w-3xl mx-auto space-y-4">`;
+                data.items.forEach(item => {
+                    html += `
+                        <div class="glass-card rounded-2xl p-4 border border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div>
+                                <span class="text-xs font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md mb-1 inline-block">Sentence ${item.id}</span>
+                                <div class="pinyin-text text-sm mb-0.5">${item.pinyin}</div>
+                                <div class="text-xl font-bold font-chinese text-slate-800">${item.fullSentence}</div>
+                                <div class="text-xs text-slate-500 mt-1">${item.english}</div>
+                            </div>
+                            <button onclick="speakChinese('${item.fullSentence}')" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold rounded-xl flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Speak</span>
+                            </button>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+                container.innerHTML = html;
+            } else {
+                // Practice Mode: Tap blocks to unscramble sentence
+                let html = `
+                    <div class="mb-4 p-3 bg-teal-50 border border-teal-100 rounded-xl text-xs text-teal-900 flex items-center justify-between">
+                        <span><i class="fa-solid fa-arrow-down-short-wide mr-1.5"></i> Tap word blocks in correct order to arrange the sentence:</span>
+                        <span id="s9ScoreBadge" class="font-bold text-teal-700">0/${data.items.length} Unscrambled</span>
+                    </div>
+                    <div class="max-w-3xl mx-auto space-y-5">
+                `;
+
+                data.items.forEach((item, idx) => {
+                    const shuffledWords = [...item.words].sort(() => Math.random() - 0.5);
+
+                    html += `
+                        <div id="s9Card_${idx}" class="p-4 border border-slate-200 rounded-2xl bg-white shadow-sm space-y-3">
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span>Sentence ${item.id}</span>
+                                <span>${item.english}</span>
+                            </div>
+
+                            <!-- Target drop/arranged area -->
+                            <div id="s9Target_${idx}" class="min-h-[50px] p-2.5 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl flex flex-wrap gap-2 items-center">
+                                <span class="text-xs text-slate-300 font-sans italic">Tap word tiles below to place here...</span>
+                            </div>
+
+                            <!-- Word options -->
+                            <div id="s9WordsBox_${idx}" class="flex flex-wrap gap-2">
+                                ${shuffledWords.map(w => `
+                                    <button onclick="tapWordTile(${idx}, '${w}', this)"
+                                            class="px-3.5 py-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-xl font-chinese font-bold text-slate-800 text-base shadow-sm transition">
+                                        ${w}
+                                    </button>
+                                `).join('')}
+                            </div>
+
+                            <div class="flex items-center justify-between pt-1">
+                                <button onclick="resetWordTiles(${idx})" class="text-xs text-slate-400 hover:text-slate-600 font-medium">
+                                    <i class="fa-solid fa-rotate-left mr-1"></i> Reset
+                                </button>
+                                <button onclick="verifyUnscrambledSentence(${idx}, '${item.fullSentence}')"
+                                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs rounded-xl shadow-sm transition">
+                                    Check Order
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+            }
+        }
+
+        let s9Arranged = {};
+        let s9CorrectCount = 0;
+
+        function tapWordTile(idx, word, btnElem) {
+            playSFX('click');
+            if (!s9Arranged[idx]) s9Arranged[idx] = [];
+
+            const targetBox = document.getElementById(`s9Target_${idx}`);
+            if (s9Arranged[idx].length === 0) {
+                targetBox.innerHTML = '';
+            }
+
+            s9Arranged[idx].push(word);
+            btnElem.disabled = true;
+            btnElem.className = "px-3.5 py-2 bg-slate-100 text-slate-300 border border-slate-200 rounded-xl font-chinese font-bold text-base opacity-50";
+
+            const placedTile = document.createElement('span');
+            placedTile.className = "px-3.5 py-2 bg-blue-600 text-white rounded-xl font-chinese font-bold text-base shadow-sm animate-pulse-once";
+            placedTile.innerText = word;
+            targetBox.appendChild(placedTile);
+        }
+
+        function resetWordTiles(idx) {
+            playSFX('click');
+            s9Arranged[idx] = [];
+            const targetBox = document.getElementById(`s9Target_${idx}`);
+            targetBox.innerHTML = '<span class="text-xs text-slate-300 font-sans italic">Tap word tiles below to place here...</span>';
+
+            const wordsBox = document.getElementById(`s9WordsBox_${idx}`);
+            const buttons = wordsBox.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.disabled = false;
+                b.className = "px-3.5 py-2 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-xl font-chinese font-bold text-slate-800 text-base shadow-sm transition";
+            });
+        }
+
+        function verifyUnscrambledSentence(idx, correctFullSentence) {
+            const userArrangedText = (s9Arranged[idx] || []).join('');
+
+            if (userArrangedText === correctFullSentence) {
+                playSFX('correct');
+                s9CorrectCount++;
+                addPoints(10);
+                speakChinese(correctFullSentence);
+
+                const card = document.getElementById(`s9Card_${idx}`);
+                card.className = "p-4 border border-emerald-300 rounded-2xl bg-emerald-50/40 shadow-sm space-y-3";
+
+                document.getElementById('s9ScoreBadge').innerText = `${s9CorrectCount}/3 Unscrambled`;
+                if (s9CorrectCount === 3) {
+                    markQuestionCompleted(9);
+                }
+            } else {
+                playSFX('wrong');
+                alert("Incorrect word order! Click Reset to try arranging again.");
+            }
+        }
+
+        function addPoints(pts) {
+            userScore += pts;
+            document.getElementById('scoreCounter').innerText = userScore;
+        }
+
+        function markQuestionCompleted(soalanId) {
+            completedQuestions.add(soalanId);
+            renderSidebarTabs();
+
+            if (completedQuestions.size === 9) {
+                playSFX('fanfare');
+                document.getElementById('modalStarsCount').innerText = userScore;
+                document.getElementById('completionModal').classList.remove('hidden');
+            }
+        }
+
+        function closeModal() {
+            playSFX('click');
+            document.getElementById('completionModal').classList.add('hidden');
+        }
+
+        window.onload = function() {
+            renderCurrentSoalan();
+        };
+    </script>
+</body>
+</html>
